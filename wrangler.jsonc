@@ -1,0 +1,6 @@
+{
+  "name": "<TBD>",
+  "main": "./dist/_worker.js/index.js",
+  "compatibility_date": "<TBD>",
+  "node_compat": true
+}
