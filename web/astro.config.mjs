@@ -12,9 +12,8 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
+
   integrations: [svelte()],
-  adapter: cloudflare({
-    imageService: 'cloudflare'
- }),
-  output: 'server'
+  output: "server",
+  adapter: cloudflare()
 });
