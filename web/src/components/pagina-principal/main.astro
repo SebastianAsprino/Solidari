@@ -3,17 +3,19 @@ import LogoMainPage from '../../assets/LogoMainPage.astro';
 import LogoMainCelular from '../../assets/LogoMainCelular.astro'
 import s from './styles';
 
+export const prerender = true;
 ---
+
 <main  class={s.main}>
 	<section class={s.SectionIzquierdo}>
-		<LogoMainPage  className="absolute top-10 left-10 w-[6%] h-auto"/>
+		<LogoMainPage  className={s.svg}/>
 		<h1 class={s.SectionIzquierdoH1}>
 			BIENVENIDO <br> AL FUTURO.
 		</h1>
 		<p class={s.SectionIzquierdoP}  >
 			Créditos 100% digitales, rápidos y sin complicaciones
 		</p>
-		<a href="/pagina2" class={s.SectionIzquierdoA}>
+		<a href="/solicitud" class={s.SectionIzquierdoA} aria-label="Ir a página de la solicitud">
 			Empezar 
 		</a>
 	</section>
