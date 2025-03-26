@@ -5,8 +5,6 @@ const NavDivASVG:string = "max-w-[100%] h-auto";
 const NavDiv2:string = "flex items-center justify-between gap-4 translate-x-[-50%]";
 const NavDiv2A:string = "h-auto w-[100%]";
 const NavDiv2ASVG:string = "max-w-[100%] h-auto";
-
-
 const styles = {
  Nav,
  NavDiv1,
@@ -16,5 +14,4 @@ const styles = {
  NavDiv2A,
  NavDiv2ASVG
 };
-
 export default styles;
