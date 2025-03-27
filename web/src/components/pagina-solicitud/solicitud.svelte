@@ -57,18 +57,20 @@
 
 
 <script lang="ts">
-  import { mostrarEtapa1 } from "../../services/storage/store";
+	import { mostrarEtapa1 } from "../../services/storage/store";
 	import Simulador from "./etapa-1/simulador.svelte";
-  import DatosUsuario from "./etapa-2/datos_usuario.svelte";
+	import DatosUsuario from "./etapa-2/datos_usuario.svelte";
 
-  const cambiarFormulario = () => mostrarEtapa1.update(prev => !prev);
+	let showDatosUsuario = false;
+	
+	$: if (!$mostrarEtapa1) showDatosUsuario = true;
+	const cambiarFormulario = () => mostrarEtapa1.update(prev => !prev);
 </script>
 
 <main>
-  {#if $mostrarEtapa1}
-		<Simulador onBack={cambiarFormulario} />
-  {:else}
-    <DatosUsuario onBack={cambiarFormulario} />
-  {/if}
+	{#if $mostrarEtapa1}
+		<Simulador onBack={cambiarFormulario}/>
+	{:else if showDatosUsuario}
+		<DatosUsuario onBack={cambiarFormulario}/>
+	{/if}
 </main>
-
