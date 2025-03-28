@@ -4,7 +4,10 @@ import type { APIRoute } from 'astro';
 
 const app = new Hono().basePath('/api');
 
-app.get('/', (c) => c.text('Hello Cloudflare Workers!'))
+app.get('/', (c) => c.json({
+	test: "test",
+	number: Math.random()
+}))
 
 // export default app
 // export const GET = (context: any) => {
