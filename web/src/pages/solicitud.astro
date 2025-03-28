@@ -1,12 +1,15 @@
 ---
-import Layout from "../layouts/Layout.astro"
+import Layout from "../layouts/Layout.astro";
 import Header from "../components/header/header.astro";
-import Proceso from "../components/pagina-solicitud/solicitud.svelte"
+import Proceso from "../components/pagina-solicitud/solicitud.svelte";
 import Footer from "../components/footer/footer.astro";
+export const prerender = true
 ---
-
 <Layout>
 	<Header/>
-	<Proceso client:only="svelte"/>
+	<div id="fallback" class="min-h-[calc(100vh-10rem)] relative">
+		<div  class="absolute" aria-hidden="true"/>
+	</div>
+		<Proceso client:only="svelte" />
 	<Footer/>
 </Layout>

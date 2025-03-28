@@ -1,5 +1,5 @@
 export interface Solicitud {
-  cliente:boolean;
+  cliente?:boolean;
 	monto:number;
 	cuotas:number;
 	llave:boolean;

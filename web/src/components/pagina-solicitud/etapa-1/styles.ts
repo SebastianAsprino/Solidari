@@ -1,13 +1,18 @@
-const main:string = "flex h-screen overflow-hidden";
-const svg:string = "absolute top-10 left-10 w-[6%] h-auto";
-const SectionIzquierdo:string = "w-1/2 h-full flex flex-col justify-center items-center relative overflow-hidden bg-black text-white p-[5%] box-border";
+
+const SectionIzquierdo:string = "w-1/2 h-full flex flex-col justify-start items-center relative overflow-hidden p-[2%] box-border";
+
+
+
 const SectionIzquierdoH1:string ="text-[6vw] mb-[2%] leading-[1.3] mt-[-9%] font-bold";
+
+
 const SectionIzquierdoP:string ="text-[1.5vw] mb-[8%]";
 const SectionIzquierdoA:string ="bg-white text-black py-[2%] px-[5%] no-underline rounded text-[2vw] transition-all duration-300 hover:scale-110 hover:shadow-lg hover:brightness-90 hover:bg-gray-200";
+
+
 const SectionDerecho:string ="w-1/2 h-full bg-white relative";
+
 const styles = {
-	main,
-	svg,
 	SectionIzquierdo,
 	SectionIzquierdoH1,
 	SectionIzquierdoP,

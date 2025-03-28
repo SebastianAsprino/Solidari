@@ -1,0 +1,6 @@
+const main:string = "flex h-screen overflow-hidden";
+const styles = {
+	main
+};
+
+export default styles;
