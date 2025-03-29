@@ -134,9 +134,14 @@
 
 	{#if ($solicitudStore.cliente === false) || ($solicitudStore.cliente && $solicitudStore.llave)}
 	<h2 class="text-[1.4vw] mb-[1.2vw]">¿Cuánto dinero quieres recibir?</h2>
-	<p class="bg-black text-white py-[1.2%] px-[3%] no-underline rounded text-[1.2vw] mb-[1.5vw]">{formatodinero($solicitudStore.monto)}</p>
-	
-	<div class="w-1/2 flex flex-col items-center mb-[1vw] relative">
+
+
+
+
+	<p class="bg-black text-white py-[1.2%] px-[3%] no-underline rounded text-[1.2vw] mb-[2.5vw]">{formatodinero($solicitudStore.monto)}</p>
+
+
+	<div class="w-1/2 flex flex-col items-center mb-[2.5vw] relative">
     <!-- Range input -->
     <div class="w-full flex items-center relative">
         <!-- Punto inicial - posicionado absolutamente a la izquierda -->
@@ -191,7 +196,7 @@
 
 
 
-	<h2>¿En cuántas cuotas?</h2>
+	<h2 class="text-[1.5vw] mb-[1.2vw]">¿En cuántas cuotas?</h2>
 
 
 

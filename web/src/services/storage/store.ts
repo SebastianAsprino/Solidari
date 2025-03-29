@@ -34,28 +34,30 @@ const solicitudStore = writable<Solicitud>(solicitudCredito);
 // 	};
 // };
 
-//  re hacer esta formula todos lso costos deben ser el 20% del total
 const calcularDetallesIniciales = (solicitud: Solicitud): Detalles => {
 	const esClienteNuevo = !solicitud.cliente;
-	const porcentajeFondo = esClienteNuevo ? 0.20 : 0.15;
-	
-	const cuota = solicitud.monto / solicitud.cuotas;
-	const interesPorCuota = solicitud.monto * 0.019;
+	const porcentajeTotal = esClienteNuevo ? 0.20 : 0.15;
+
+	// Total a pagar y componentes base
+	const totalAPagar = solicitud.monto * (1 + porcentajeTotal);
+	const totalPorCuota = totalAPagar / solicitud.cuotas;
+	const cuotaPrincipal = solicitud.monto / solicitud.cuotas;
+
+	// Componentes fijos por cuota (excepto interés)
 	const administracionPorCuota = 8000;
 	const ivaPorCuota = 1520;
 
-	const totalInteres = interesPorCuota * solicitud.cuotas;
-	const totalAdministracion = administracionPorCuota * solicitud.cuotas;
-	const totalIva = ivaPorCuota * solicitud.cuotas;
-	const fondoBruto = solicitud.monto * porcentajeFondo;
+	// Fondo fijo como porcentaje del monto por cuota
+	const fondoPorCuota = (solicitud.monto * porcentajeTotal) / solicitud.cuotas;
 
-	const fondoNeto = Math.max(fondoBruto - (totalInteres + totalAdministracion + totalIva), 0);
-	const fondoPorCuota = fondoNeto / solicitud.cuotas;
-
-	const totalPorCuota = cuota + interesPorCuota + administracionPorCuota + ivaPorCuota + fondoPorCuota;
+	// Calcula el interés necesario para alcanzar el total
+	const interesPorCuota = Math.max(
+			totalPorCuota - cuotaPrincipal - administracionPorCuota - ivaPorCuota - fondoPorCuota,
+			0 // Evita interés negativo
+	);
 
 	return {
-			cuota,
+			cuota: cuotaPrincipal,
 			interes: interesPorCuota,
 			fondo: fondoPorCuota,
 			administracion: administracionPorCuota,
