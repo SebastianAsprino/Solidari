@@ -7,15 +7,9 @@ export const prerender = true
 ---
 <Layout>
 	<Header/>
-	<div id="fallback" class="min-h-[calc(100vh-10rem)] relative">
+	<div id="fallback" class="min-h-[calc(110vh-10rem)] relative">
 		<div  class="absolute" aria-hidden="true"/>
 	</div>
 		<Proceso client:only="svelte" />
 	<Footer/>
 </Layout>
-
-
-<!-- 
-<ClientComponent client:only="vue">
-  <div slot="fallback">Cargando</div> asi es como astro gestiona ese comportmiento dinamico que queria
-</ClientComponent> -->
