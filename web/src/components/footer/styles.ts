@@ -1,11 +1,9 @@
-const footer:string = "footer sm:footer-horizontal bg-black text-neutral-content items-center p-4";
-const footerAside:string = "grid-flow-col items-center";
-const footerAsideSVG:string = "w-auto h-auto";
+const footer:string = "footer sm:footer-horizontal footer-center bg-base-300 text-base-content sm:p-2 p-0 border-t border-t-black";
+const p:string = " text-[2.6vw] sm:text-base";
 
 const styles = {
 footer,
-footerAside,
-footerAsideSVG
+p,
 };
 
 export default styles;

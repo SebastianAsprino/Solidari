@@ -1,10 +1,11 @@
 ---
-import LogoMainPage from "../../assets/LogoMainPage.astro"
 import s from './styles'
 ---
+
 <footer class={s.footer}>
-	<aside class={s.footerAside}>
-		<LogoMainPage className={s.footerAsideSVG}/>
-		<p>Copyright © {new Date().getFullYear()} - All right reserved</p>
+	<aside>
+		<p class={s.p}>
+			Copyright © {new Date().getFullYear()} Solidari Colombia SA. Todos los derechos reservados
+		</p>
 	</aside>
 </footer>
