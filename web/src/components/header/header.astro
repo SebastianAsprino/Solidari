@@ -1,23 +1,16 @@
 ---
 import LogoSolidari from "../../assets/LogoSolidari.astro"
-import LogoInstagram from "../../assets/LogoInstagram.astro"
-import LogoWhatsapp from "../../assets/LogoWhatsapp.astro"
+import Menu from "./menu.svelte";
 import s from "./styles"
 ---
 <header>
 	<nav class={s.Nav}>
-		<div class={s.NavDiv1}>
-			<a href="/" class={s.NavDivA} aria-label="Ir a página principal">
-				<LogoSolidari className={s.NavDivASVG}/>
+		<div class={s.start}></div>
+		<div class={s.center}>
+			<a href="/" class={s.enlacePaginaPrincipal} aria-label="Ir a página principal">
+				<LogoSolidari/>
 			</a>
 		</div>
-		<div class={s.NavDiv2}>
-			<a href="https://www.instagram.com/solidari_co/" class={s.NavDiv2A} aria-label="Página de Instagram">
-				<LogoInstagram className={s.NavDiv2ASVG}/>
-			</a>
-			<a href="https://wa.me/573003173815" class={s.NavDiv2A} aria-label="Ir a Whatsapp">
-				<LogoWhatsapp className={s.NavDiv2ASVG}/>
-			</a>
-		</div>
+		<Menu client:load/>
 	</nav>
 </header>
