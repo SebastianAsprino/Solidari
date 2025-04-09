@@ -362,103 +362,121 @@ Solicítalo YA
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
-  // Estado inicial del drawer
-  let isOpen = false; // Indica si el drawer está abierto o cerrado
-  let startY = 0; // Posición inicial del toque
-  let currentY = 0; // Posición actual del toque
-  let offsetY = 0; // Desplazamiento acumulado
-  let maxOffset = 300; // Máximo desplazamiento permitido
+  import { onMount } from 'svelte';
+  
+  let y = 0;
+  let isDragging = false;
+  let startY;
 
-  // Función para manejar el inicio del gesto táctil
-  function handleTouchStart(event) {
-    startY = event.touches[0].clientY;
-  }
+  onMount(() => {
+    // Inicializar posición al montar el componente
+    y = window.innerHeight - 100;
+    
+    // Añadir listener de resize
+    window.addEventListener('resize', handleResize);
+    
+    // Limpieza al desmontar
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
 
-  // Función para manejar el movimiento táctil
-  function handleTouchMove(event) {
-    currentY = event.touches[0].clientY;
-    offsetY = Math.max(0, Math.min(maxOffset, startY - currentY)); // Limitar el desplazamiento
-  }
-
-  // Función para manejar el final del gesto táctil
-  function handleTouchEnd() {
-    if (offsetY > maxOffset / 2) {
-      isOpen = true; // Abrir el drawer si el desplazamiento supera la mitad
+  function startDrag(e) {
+    isDragging = true;
+    
+    if (e.type === 'touchstart') {
+      startY = e.touches[0].clientY - y;
     } else {
-      isOpen = false; // Cerrar el drawer si no alcanza la mitad
+      startY = e.clientY - y;
     }
-    offsetY = 0; // Reiniciar el desplazamiento
+    
+    e.preventDefault();
+  }
+
+  function duringDrag(e) {
+    if (!isDragging) return;
+    
+    let newY;
+    
+    if (e.type === 'touchmove') {
+      newY = e.touches[0].clientY - startY;
+    } else {
+      newY = e.clientY - startY;
+    }
+    
+    // Limitar movimiento vertical
+    const minY = 100;
+    const maxY = window.innerHeight - 100;
+    
+    y = Math.max(minY, Math.min(newY, maxY));
+  }
+
+  function stopDrag() {
+    isDragging = false;
+  }
+
+  function handleResize() {
+    if (!isDragging) {
+      y = Math.min(y, window.innerHeight - 100);
+    }
   }
 </script>
 
-<style>
-  /* Estilos generales */
-  main {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
-  }
+<svelte:window on:resize={handleResize} />
 
-  section:first-child {
-    flex: 1;
-    background-color: #f3f4f6;
-    padding: 2%;
-    overflow: auto;
-  }
-
-  .drawer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 50%; /* Altura máxima del drawer */
-    background-color: white;
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
-    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
-    transform: translateY(100%); /* Inicialmente oculto */
-    transition: transform 0.3s ease-in-out;
-    overflow: hidden;
-  }
-
-  .drawer.open {
-    transform: translateY(0); /* Drawer completamente visible */
-  }
-
-  .drawer.dragging {
-    transition: none; /* Desactivar transición mientras se arrastra */
-    transform: translateY(calc(100% - var(--offset)));
-  }
-
-  .handle {
-    width: 50px;
-    height: 5px;
-    background-color: #ccc;
-    border-radius: 2.5px;
-    margin: 10px auto;
-  }
-</style>
-
-<main class="flex flex-col h-screen overflow-hidden">
-  <!-- Primera sección: contenido principal -->
-  <section class="flex-1 p-[2%] box-border">
-    <p>Contenido principal</p>
-  </section>
-
-  <!-- Segunda sección: drawer -->
-  <section
-    class="drawer {isOpen ? 'open' : ''}"
-    on:touchstart={handleTouchStart}
-    on:touchmove={handleTouchMove}
-    on:touchend={handleTouchEnd}
-    style="--offset: {offsetY}px"
-  >
-    <!-- Handle para arrastrar -->
-    <div class="handle"></div>
-    <div class="p-[3%]">
-      <p>Este es el contenido del drawer</p>
-    </div>
-  </section>
-</main>
+<div
+  on:touchstart={startDrag}
+  on:mousedown={startDrag}
+  on:touchmove={duringDrag}
+  on:mousemove={duringDrag}
+  on:touchend={stopDrag}
+  on:mouseup={stopDrag}
+  on:mouseleave={stopDrag}
+  style="position: fixed; 
+         left: 0;
+         right: 0;
+         top: {y}px; 
+         height: 100px;
+         touch-action: none; 
+         cursor: ns-resize;
+         transition: {isDragging ? 'none' : 'top 0.2s ease'};
+         background-color: #4CAF50;
+         border-radius: 10px 10px 0 0;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: white;
+         font-weight: bold;
+         user-select: none;
+         margin: 0 auto;
+         max-width: 500px;
+         box-shadow: 0 -2px 10px rgba(0,0,0,0.2);"
+>
+	Prueba de drawer
+  <div style="position: absolute; top: 8px; width: 40px; height: 4px; background: rgba(255,255,255,0.5); border-radius: 2px;"></div>
+</div>

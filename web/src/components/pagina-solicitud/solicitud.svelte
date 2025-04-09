@@ -15,7 +15,8 @@
 
 <!-- <main class={s.main}> -->
 	<!-- {#if $mostrarEtapa1} -->
-		<Simulador onBack={cambiarFormulario}/>
+		<!-- <Simulador onBack={cambiarFormulario}/> -->
+		<Simulador/>
 	<!-- {:else if showDatosUsuario} -->
 		<!-- <DatosUsuario onBack={cambiarFormulario}/> -->
 	<!-- {/if} -->
