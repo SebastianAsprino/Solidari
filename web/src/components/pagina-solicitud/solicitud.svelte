@@ -13,10 +13,10 @@
 	const cambiarFormulario = () => mostrarEtapa1.update(prev => !prev);
 </script>
 
-<main class={s.main}>
-	{#if $mostrarEtapa1}
+<!-- <main class={s.main}> -->
+	<!-- {#if $mostrarEtapa1} -->
 		<Simulador onBack={cambiarFormulario}/>
-	{:else if showDatosUsuario}
-		<DatosUsuario onBack={cambiarFormulario}/>
-	{/if}
-</main>
+	<!-- {:else if showDatosUsuario} -->
+		<!-- <DatosUsuario onBack={cambiarFormulario}/> -->
+	<!-- {/if} -->
+<!-- </main> -->

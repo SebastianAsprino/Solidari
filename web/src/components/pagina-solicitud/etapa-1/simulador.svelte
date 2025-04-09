@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { solicitudStore, detallesStore } from "../../../services/storage/store";
 	import config from "../../../../web_config";
 	import s from "./styles";
@@ -47,27 +47,41 @@
 	};
 
 	export let onBack: () => void;
-</script>
+</script> -->
 
-<section class={s.SectionIzquierdo}>
-	<h1 class={s.SectionIzquierdoH1}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <main class="flex h-screen overflow-hidden">
+<section class="w-1/2 h-full flex flex-col justify-start items-center relative overflow-hidden p-[2%] box-border">
+	<h1 class="text-[2.2vw] font-bold tracking-wider mb-[2vw]">
 		Simulador de Crédito
 	</h1>
-	<h2 class={s.SectionIzquierdoH2TipoCliente}>
+	<h2 class="text-[1.5vw] mb-[1.2vw]">
 		¿Qué tipo de cliente eres?
 	</h2>
-	<div class={s.SectionIzquierdoDivButtons}>
-		<button class={s.SectionIzquierdoDivButton} on:click={() => tipoCliente(false)}>
+	<div class="flex w-1/2 justify-around mb-[1.5vw]">
+		<button class="bg-black text-white py-[2.5%] px-[4.5%] no-underline rounded-full text-[1.2vw] transition-all duration-300  hover:shadow-lg hover:brightness-90 hover:bg-gray-800" on:click={() => tipoCliente(false)}>
 				Nuevo
 		</button>
-		<button class={s.SectionIzquierdoDivButton} on:click={() => tipoCliente(true)}>
+		<button class="bg-black text-white py-[2.5%] px-[4.5%] no-underline rounded-full text-[1.2vw] transition-all duration-300  hover:shadow-lg hover:brightness-90 hover:bg-gray-800" on:click={() => tipoCliente(true)}>
 			Miembro del Club
 		</button>
 	</div>
 
 	{#if $solicitudStore.cliente}
-		<div class={s.SectionIzquierdoDivLlave}>
-			<h2 class={s.SectionIzquierdoDivLlaveH2}>
+		<div class="flex flex-col items-center w-1/2 mb-[2.2vw]">
+			<h2 class="text-[1.4vw] mb-[1vw]">
 				Contraseña
 			</h2>
 			<input
@@ -75,25 +89,25 @@
 				bind:value={llaveInput}
 				on:input={validarCodigo} 
 				class:border-red-500={!$solicitudStore.llave && llaveInput.length > 0}
-				class={s.SectionIzquierdoDivLlaveInput}
+				class="w-full border-b-2 border-black text-[1.2vw] outline-none  transition-all"
 			/>
 
 			{#if !$solicitudStore.llave && llaveInput.length !== 0}
-				<p class={s.SectionIzquierdoDivLlaveP}>✖ Contraseña no válida</p>
+				<p class="text-red-500 mt-1 text-[1vw]">✖ Contraseña no válida</p>
 			{/if}
 		</div>
 	{/if}
 
 	{#if ($solicitudStore.cliente === false) || ($solicitudStore.cliente && $solicitudStore.llave)}
-	<h2 class={s.SectionIzquierdoH2CantidadDinero}>
+	<h2 class="text-[1.4vw] mb-[1.2vw]">
 		¿Cuánto dinero quieres recibir?
 	</h2>
-	<p class={s.SectionIzquierdoP}>
+	<p class="text-[1.5vw] font-semibold  mb-[1.5vw]">
 		{formatodinero($solicitudStore.monto)}
 	</p>
-	<div class={s.SectionIzquierdoDivSliderMonto}>
-		<div class={s.SectionIzquierdoDivDivSliderMonto}>
-			<div class={s.SectionIzquierdoDivPointLeftSliderMonto}></div>
+	<div class="w-1/2 flex flex-col items-center mb-[1.5vw] relative">
+		<div class="w-full flex items-center relative">
+			<div class="absolute left-0 w-[0.5vw] h-[0.5vw] bg-black rounded-full transform -translate-x-[0.25vw]"></div>
 			<input
 				type="range"
 				min="200000"
@@ -101,64 +115,22 @@
 				step="5000"
 				value={$solicitudStore.monto}
 				on:input={actualizarMonto}
-				class={s.SectionIzquierdoDivSliderMontoInput}/>
-			<div class={s.SectionIzquierdoDivPointRightSliderMonto}></div>
+				class="w-full appearance-none bg-transparent cursor-pointer [&::-webkit-slider-runnable-track]:bg-black [&::-webkit-slider-runnable-track]:h-[2px] [&::-moz-range-track]:bg-black [&::-moz-range-track]:h-[2px] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[1vw] [&::-webkit-slider-thumb]:h-[1vw] [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:-mt-[0.5vw] [&::-webkit-slider-thumb]:border-none [&::-webkit-slider-thumb]:outline-none [&::-moz-range-thumb]:w-[1vw] [&::-moz-range-thumb]:h-[1vw] [&::-moz-range-thumb]:bg-black [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-none"/>
+			<div class="absolute right-0 w-[0.5vw] h-[0.5vw] bg-black rounded-full transform translate-x-[0.25vw]"></div>
 		</div>
-		<div class={s.SectionIzquierdoDivDivSliderMontoText}>
-			<span class={s.SectionIzquierdoDivDivSliderMontoSpanText}>{formatodinero(200000)}</span>
-			<span class={s.SectionIzquierdoDivDivSliderMontoSpan2Text}>{formatodinero($solicitudStore.cliente && $solicitudStore.llave ? 2000000 : 500000)}</span>
+		<div class="flex justify-between w-full mt-auto text-[1vw]">
+			<span class="transform -translate-x-[2.5vw]">{formatodinero(200000)}</span>
+			<span class="transform -translate-x-[2.5vw]">{formatodinero($solicitudStore.cliente && $solicitudStore.llave ? 2000000 : 500000)}</span>
 		</div>
 	</div>
-	<h2 class={s.H2}>
+	<h2 class="text-[1.4vw] mb-[1vw]">
 		¿En cuántas cuotas?
 	</h2>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
 	<div class="w-1/2 flex flex-col items-center mb-[1vw] relative">
-<!-- Range input -->
-<div class="w-full flex items-center relative">
-<!-- Punto inicial - posicionado absolutamente a la izquierda -->
-<div class="absolute left-0 w-[0.5vw] h-[0.5vw] bg-black rounded-full transform -translate-x-[0.25vw]"></div>
 
+<div class="w-full flex items-center relative">
+
+<div class="absolute left-0 w-[0.5vw] h-[0.5vw] bg-black rounded-full transform -translate-x-[0.25vw]"></div>
 <input
 type="range"
 min="1"
@@ -187,33 +159,28 @@ class="w-full appearance-none bg-transparent cursor-pointer
 [&::-moz-range-thumb]:border-none"
 />
 
-<!-- Punto medio -->
 <div class="absolute left-1/2 w-[0.5vw] h-[0.5vw] bg-black rounded-full transform -translate-x-1/2"></div>
 
-<!-- Punto final - posicionado absolutamente a la derecha -->
+
 <div class="absolute right-0 w-[0.5vw] h-[0.5vw] bg-black rounded-full transform translate-x-[0.25vw]"></div>
 </div>
 
-<!-- Límites del rango - alineados con los puntos -->
+
 <div class="flex justify-between w-full mt-1/2 text-[1vw]">
 <span class="transform -translate-x-[0.2vw]">1</span>
 <span class="transform -translate-x-[-0.1vw]">3</span>
 <span class="transform translate-x-[0.2vw]">6</span>
 </div>
 
-<!-- Marcadores para las 3 posiciones (opcional, ya que tenemos los puntos visuales) -->
+
 <datalist id="cuotas-markers">
 <option value="1" label="1"></option>
 <option value="2" label="3"></option>
 <option value="3" label="6"></option>
 </datalist>
 </div>
-
-
-
-
 {/if}
-</section>
+</section> -->
 
 
 
@@ -267,14 +234,14 @@ class="w-full appearance-none bg-transparent cursor-pointer
 
 
 
-<div class="absolute left-1/2 top-1/2 h-[60%] w-[0.14vw] bg-black transform -translate-x-1/2 -translate-y-1/2"></div>
+<!-- <div class="absolute left-1/2 top-1/2 h-[60%] w-[0.14vw] bg-black transform -translate-x-1/2 -translate-y-1/2"></div> -->
 
 
 
 
 
 
-<section class="w-1/2 h-full flex flex-col justify-start items-center relative overflow-hidden p-[3%] box-border">
+<!-- <section class="w-1/2 h-full flex flex-col justify-start items-center relative overflow-hidden p-[3%] box-border">
 <div class="bg-black text-white w-[70%] p-[0.5vw] mb-[0.6vw]">
 <h1 class="text-[2.2vw] mb-4 font-bold text-center">Detalle costos</h1>
 
@@ -388,19 +355,110 @@ i
 <button class="bg-black text-white py-[1.4%] px-[3%] rounded text-[1.2vw] transition-all duration-300 hover:shadow-lg hover:brightness-90 hover:bg-gray-800 mt-4" on:click={onBack}>
 Solicítalo YA
 </button>
-</section>
+</section> -->
+
+<!-- </main> -->
 
 
 
 
+<script>
+  // Estado inicial del drawer
+  let isOpen = false; // Indica si el drawer está abierto o cerrado
+  let startY = 0; // Posición inicial del toque
+  let currentY = 0; // Posición actual del toque
+  let offsetY = 0; // Desplazamiento acumulado
+  let maxOffset = 300; // Máximo desplazamiento permitido
 
+  // Función para manejar el inicio del gesto táctil
+  function handleTouchStart(event) {
+    startY = event.touches[0].clientY;
+  }
 
+  // Función para manejar el movimiento táctil
+  function handleTouchMove(event) {
+    currentY = event.touches[0].clientY;
+    offsetY = Math.max(0, Math.min(maxOffset, startY - currentY)); // Limitar el desplazamiento
+  }
 
+  // Función para manejar el final del gesto táctil
+  function handleTouchEnd() {
+    if (offsetY > maxOffset / 2) {
+      isOpen = true; // Abrir el drawer si el desplazamiento supera la mitad
+    } else {
+      isOpen = false; // Cerrar el drawer si no alcanza la mitad
+    }
+    offsetY = 0; // Reiniciar el desplazamiento
+  }
+</script>
 
-<!-- 
+<style>
+  /* Estilos generales */
+  main {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
 
+  section:first-child {
+    flex: 1;
+    background-color: #f3f4f6;
+    padding: 2%;
+    overflow: auto;
+  }
 
+  .drawer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%; /* Altura máxima del drawer */
+    background-color: white;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(100%); /* Inicialmente oculto */
+    transition: transform 0.3s ease-in-out;
+    overflow: hidden;
+  }
 
-      
+  .drawer.open {
+    transform: translateY(0); /* Drawer completamente visible */
+  }
 
-  </div> -->
+  .drawer.dragging {
+    transition: none; /* Desactivar transición mientras se arrastra */
+    transform: translateY(calc(100% - var(--offset)));
+  }
+
+  .handle {
+    width: 50px;
+    height: 5px;
+    background-color: #ccc;
+    border-radius: 2.5px;
+    margin: 10px auto;
+  }
+</style>
+
+<main class="flex flex-col h-screen overflow-hidden">
+  <!-- Primera sección: contenido principal -->
+  <section class="flex-1 p-[2%] box-border">
+    <p>Contenido principal</p>
+  </section>
+
+  <!-- Segunda sección: drawer -->
+  <section
+    class="drawer {isOpen ? 'open' : ''}"
+    on:touchstart={handleTouchStart}
+    on:touchmove={handleTouchMove}
+    on:touchend={handleTouchEnd}
+    style="--offset: {offsetY}px"
+  >
+    <!-- Handle para arrastrar -->
+    <div class="handle"></div>
+    <div class="p-[3%]">
+      <p>Este es el contenido del drawer</p>
+    </div>
+  </section>
+</main>
