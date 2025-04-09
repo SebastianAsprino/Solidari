@@ -22,9 +22,9 @@ import s from './styles';
 	
 		<div class="flex flex-row items-center gap-2 sm:gap-1 m-5 ml-[5.7vw]">
 	
-			<p class="bg-white text-black border border-black py-[1%] px-[6%] sm:px-[6%] rounded-xl text-[2.5vw] sm:text-[1.1vw] ">TECNOLOGÍA</p>
-			<p class="bg-white text-black border border-black py-[1%] px-[6%] sm:px-[6%] rounded-xl text-[2.5vw] sm:text-[1.1vw] sm:translate-y-[5vw] ">INCLUSIÓN</p>
-			<p class="bg-white text-black border border-black py-[1%] px-[6%] sm:px-[6%] rounded-xl text-[2.5vw] sm:text-[1.1vw] sm:translate-y-[10vw] ">TRANSPARENCIA</p>
+			<p class="bg-white text-black border border-black py-[1%] px-[6%] rounded-xl text-[2.5vw] sm:text-[1.1vw] ">TECNOLOGÍA</p>
+			<p class="bg-white text-black border border-black py-[1%] px-[6%] rounded-xl text-[2.5vw] sm:text-[1.1vw] sm:translate-y-[5vw] ">INCLUSIÓN</p>
+			<p class="bg-white text-black border border-black py-[1%] px-[6%] rounded-xl text-[2.5vw] sm:text-[1.1vw] sm:translate-y-[10vw] ">TRANSPARENCIA</p>
 			</div>
 
 		</section>
@@ -33,15 +33,27 @@ import s from './styles';
 
 	<section class="w-full sm:w-1/2 h-full bg-white relative order-1 md:order-2">
 		
-		<img 
-		src="/hombre-feliz-pc.webp" 
-		srcset="
-			/hombre-feliz-celular.webp 650w,
-			/hombre-feliz-pc.webp 768w,
-			/hombre-feliz-pc.webp 1024w"
-		sizes="(max-width: 640px) 100vw, 50vw" 
-		alt="Hombre feliz de cómo Solidari cambió su vida y ahora es mejor">
-	
+		<picture>
+			<!-- Para móviles -->
+			<source 
+					media="(max-width: 767px)"
+					srcset="/hombre-feliz-celular.webp 1x">
+			
+			<!-- Para tablets -->
+			<source 
+					media="(min-width: 768px) and (max-width: 1023px)"
+					srcset="/hombre-feliz-tablet.webp 1x">
+			
+			<!-- Para escritorio -->
+			<source 
+					media="(min-width: 1024px)"
+					srcset="/hombre-feliz-pc.webp 1x">
+			
+			<!-- Imagen de respaldo -->
+			<img 
+					src="/hombre-feliz-pc.webp" 
+					alt="Hombre feliz de cómo Solidari cambió su vida y ahora es mejor">
+	</picture>
 	</section>
 
 </main>
