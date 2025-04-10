@@ -385,17 +385,17 @@ Solicítalo YA
 
 
 
-
 <script>
   import { onMount } from 'svelte';
   
-  let y = 0;
-  let isDragging = false;
-  let startY;
+  let y = 0; // Posición vertical del panel
+  let isDragging = false; // Estado de arrastre
+  let startY; // Posición inicial del arrastre
+  let isCollapsed = true; // Indica si el panel está colapsado o expandido
 
   onMount(() => {
     // Inicializar posición al montar el componente
-    y = window.innerHeight - 100;
+    y = window.innerHeight - 50; // Solo la pestaña es visible inicialmente
     
     // Añadir listener de resize
     window.addEventListener('resize', handleResize);
@@ -430,10 +430,17 @@ Solicítalo YA
     }
     
     // Limitar movimiento vertical
-    const minY = 100;
-    const maxY = window.innerHeight - 100;
+    const minY = 100; // Mínimo permitido
+    const maxY = window.innerHeight - 50; // Máximo permitido (pestaña visible)
     
     y = Math.max(minY, Math.min(newY, maxY));
+    
+    // Determinar si el panel está colapsado o expandido
+    if (y >= window.innerHeight - 50) {
+      isCollapsed = true;
+    } else {
+      isCollapsed = false;
+    }
   }
 
   function stopDrag() {
@@ -442,7 +449,7 @@ Solicítalo YA
 
   function handleResize() {
     if (!isDragging) {
-      y = Math.min(y, window.innerHeight - 100);
+      y = Math.min(y, window.innerHeight - 50);
     }
   }
 </script>
@@ -461,15 +468,16 @@ Solicítalo YA
          left: 0;
          right: 0;
          top: {y}px; 
-         height: 100px;
+         height: {isCollapsed ? '25vw' : '50vw'}; /* Altura dinámica */
          touch-action: none; 
          cursor: ns-resize;
-         transition: {isDragging ? 'none' : 'top 0.2s ease'};
+         transition: {isDragging ? 'none' : 'top 0.2s ease, height 0.2s ease'};
          background-color: #4CAF50;
          border-radius: 10px 10px 0 0;
          display: flex;
+         flex-direction: column;
          align-items: center;
-         justify-content: center;
+         justify-content: flex-start;
          color: white;
          font-weight: bold;
          user-select: none;
@@ -477,8 +485,17 @@ Solicítalo YA
          max-width: 500px;
          box-shadow: 0 -2px 10px rgba(0,0,0,0.2);"
 >
-	Prueba de drawer
+  <!-- Pestaña -->
   <div style="position: absolute; top: 8px; width: 40px; height: 4px; background: rgba(255,255,255,0.5); border-radius: 2px;"></div>
-
-	
+  
+  <!-- Contenido -->
+  <div style="padding: 20px; overflow-y: auto; flex-grow: 1;">
+    <h2>Panel Dinámico</h2>
+    <p class="text-black">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+    <p class="text-blue-600">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+  </div>
 </div>
