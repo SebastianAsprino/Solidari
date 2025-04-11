@@ -381,80 +381,69 @@ Solicítalo YA
 
 
 <script>
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount } from 'svelte';
 
   let y = 0;
-  let isDragging = false;
-  let startY;
   let isReady = false;
 
   const drawerHeight = 400;
   const visibleTab = 40;
 
-  function startDrag(e) {
-    isDragging = true;
-    startY = (e.type === 'touchstart' ? e.touches[0].clientY : e.clientY) - y;
-    e.preventDefault();
+  const CLOSED_POSITION = () => window.innerHeight - visibleTab;
+  const OPEN_POSITION = () => window.innerHeight - drawerHeight;
+
+  let startY = 0;
+  let endY = 0;
+  let isTouch = false;
+
+  function handleStart(e) {
+    startY = isTouchEvent(e) ? e.touches[0].clientY : e.clientY;
   }
 
-  function duringDrag(e) {
-    if (!isDragging) return;
+  function handleEnd(e) {
+    endY = isTouchEvent(e) ? e.changedTouches[0].clientY : e.clientY;
+    const delta = endY - startY;
 
-    let newY = (e.type === 'touchmove' ? e.touches[0].clientY : e.clientY) - startY;
+    const threshold = 30; // sensibilidad mínima del gesto
 
-    const minY = window.innerHeight - drawerHeight;
-    const maxY = window.innerHeight - visibleTab;
-
-    y = Math.max(minY, Math.min(newY, maxY));
-
-    e.preventDefault();
-  }
-
-  function stopDrag() {
-    isDragging = false;
-  }
-
-  function handleResize() {
-    if (!isDragging) {
-      const maxY = window.innerHeight - visibleTab;
-      y = Math.min(y, maxY);
+    if (delta < -threshold) {
+      // swipe hacia arriba → abrir
+      y = OPEN_POSITION();
+    } else if (delta > threshold) {
+      // swipe hacia abajo → cerrar
+      y = CLOSED_POSITION();
     }
   }
 
+  function isTouchEvent(e) {
+    return e.type.startsWith('touch');
+  }
+
+  function handleResize() {
+    y = CLOSED_POSITION(); // En resize, lo cerramos por defecto
+  }
+
   onMount(() => {
-    y = window.innerHeight - visibleTab;
+    y = CLOSED_POSITION();
     isReady = true;
 
     window.addEventListener('resize', handleResize);
 
-    // Escuchar en window para evitar el "pegado"
-    window.addEventListener('mousemove', duringDrag);
-    window.addEventListener('mouseup', stopDrag);
-    window.addEventListener('mouseleave', stopDrag);
-
-    window.addEventListener('touchmove', duringDrag, { passive: false });
-    window.addEventListener('touchend', stopDrag);
-    window.addEventListener('touchcancel', stopDrag);
-
     return () => {
       window.removeEventListener('resize', handleResize);
-
-      window.removeEventListener('mousemove', duringDrag);
-      window.removeEventListener('mouseup', stopDrag);
-      window.removeEventListener('mouseleave', stopDrag);
-
-      window.removeEventListener('touchmove', duringDrag);
-      window.removeEventListener('touchend', stopDrag);
-      window.removeEventListener('touchcancel', stopDrag);
     };
   });
 </script>
 
 {#if isReady}
   <div
-    on:touchstart={startDrag}
-    on:mousedown={startDrag}
-    class="fixed left-0 right-0 mx-auto max-w-[500px] bg-red-600 text-white font-bold rounded-t-2xl shadow-[0_-4px_12px_rgba(0,0,0,0.3)] flex flex-col items-center p-4 touch-none cursor-ns-resize overflow-hidden transition-[top] ease-in-out duration-200"
+    role="button"
+		tabindex="0"
+    on:touchstart={handleStart}
+    on:touchend={handleEnd}
+    on:mousedown={handleStart}
+    on:mouseup={handleEnd}
+    class="fixed left-0 right-0 mx-auto max-w-[500px] bg-red-600 text-white font-bold rounded-t-2xl shadow-[0_-4px_12px_rgba(0,0,0,0.3)] flex flex-col items-center p-4 touch-none cursor-ns-resize overflow-hidden transition-[top] ease-in-out duration-300"
     style="top: {y}px; height: {drawerHeight}px;"
   >
     <div class="w-12 h-1.5 bg-white/60 rounded-full mb-2"></div>
@@ -462,23 +451,12 @@ Solicítalo YA
     <div class="overflow-y-auto w-full h-full px-2 text-sm">
       <p>Prueba de drawer</p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. 
-        Sed lacinia, mauris eget suscipit placerat, nisi sapien luctus sem, id fermentum justo 
-        augue sed risus. Suspendisse sed nulla sit amet justo tempor malesuada. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
       </p>
-      <p>
-        Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
-        Duis efficitur urna et odio feugiat, a congue magna viverra. Sed in erat in sapien suscipit 
-        luctus. Mauris a rutrum nibh. 
-      </p>
-      <p>
-        Nam eget quam id nisi tincidunt porttitor. Aenean finibus, justo in convallis porttitor, 
-        lorem orci dapibus est, eget laoreet leo nunc a nibh.
-      </p>
+      <!-- más contenido -->
     </div>
   </div>
 {/if}
-
 
 
 
