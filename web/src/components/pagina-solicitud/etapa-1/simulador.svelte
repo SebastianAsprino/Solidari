@@ -382,22 +382,19 @@ Solicítalo YA
 
 <script>
   import { onMount } from 'svelte';
-  
+
   let y = 0;
   let isDragging = false;
   let startY;
-  let isOpen = false;
-  const panelHeight = window.innerHeight * 0.7; // 70% de la altura de la ventana
-  const peekHeight = 30; // Altura visible cuando está cerrado
+
+  const drawerHeight = 400; // Alto del drawer
+  const visibleTab = 40;    // Parte visible cuando está oculto
 
   onMount(() => {
-    // Inicializar posición al montar el componente (cerrado)
-    y = window.innerHeight - peekHeight;
-    
-    // Añadir listener de resize
+    y = window.innerHeight - visibleTab;
+
     window.addEventListener('resize', handleResize);
-    
-    // Limpieza al desmontar
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -405,65 +402,30 @@ Solicítalo YA
 
   function startDrag(e) {
     isDragging = true;
-    
-    if (e.type === 'touchstart') {
-      startY = e.touches[0].clientY - y;
-    } else {
-      startY = e.clientY - y;
-    }
-    
+    startY = (e.type === 'touchstart' ? e.touches[0].clientY : e.clientY) - y;
     e.preventDefault();
   }
 
   function duringDrag(e) {
     if (!isDragging) return;
-    
-    let newY;
-    
-    if (e.type === 'touchmove') {
-      newY = e.touches[0].clientY - startY;
-    } else {
-      newY = e.clientY - startY;
-    }
-    
-    // Limitar movimiento vertical
-    const minY = 100; // Margen superior
-    const maxY = window.innerHeight - peekHeight;
-    
+
+    let newY = (e.type === 'touchmove' ? e.touches[0].clientY : e.clientY) - startY;
+
+    // Limitar entre el tope superior deseado y el borde inferior
+    const minY = window.innerHeight - drawerHeight;
+    const maxY = window.innerHeight - visibleTab;
+
     y = Math.max(minY, Math.min(newY, maxY));
   }
 
   function stopDrag() {
     isDragging = false;
-    
-    // Determinar si el panel debe abrirse o cerrarse basado en la posición
-    const threshold = window.innerHeight - panelHeight / 2;
-    isOpen = y < threshold;
-    
-    // Ajustar la posición final
-    if (isOpen) {
-      y = Math.max(100, window.innerHeight - panelHeight);
-    } else {
-      y = window.innerHeight - peekHeight;
-    }
-  }
-
-  function togglePanel() {
-    isOpen = !isOpen;
-    if (isOpen) {
-      y = Math.max(100, window.innerHeight - panelHeight);
-    } else {
-      y = window.innerHeight - peekHeight;
-    }
   }
 
   function handleResize() {
     if (!isDragging) {
-      if (isOpen) {
-        y = Math.max(100, window.innerHeight - panelHeight);
-      } else {
-        y = window.innerHeight - peekHeight;
-      }
+      const maxY = window.innerHeight - visibleTab;
+      y = Math.min(y, maxY);
     }
   }
 </script>
@@ -478,51 +440,53 @@ Solicítalo YA
   on:touchend={stopDrag}
   on:mouseup={stopDrag}
   on:mouseleave={stopDrag}
-  style="position: fixed; 
-         left: 0;
-         right: 0;
-         top: {y}px; 
-         height: {isOpen ? panelHeight + 'px' : peekHeight + 'px'};
-         touch-action: none; 
-         cursor: ns-resize;
-         transition: {isDragging ? 'none' : 'top 0.2s ease, height 0.2s ease'};
-         background-color: #ff5733;
-         border-radius: 10px 10px 0 0;
-         color: white;
-         font-weight: bold;
-         user-select: none;
-         margin: 0 auto;
-         max-width: 500px;
-         box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
-         overflow: hidden;"
+  style="
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: {y}px;
+    height: {drawerHeight}px;
+    touch-action: none;
+    cursor: ns-resize;
+    transition: {isDragging ? 'none' : 'top 0.2s ease'};
+    background-color: #4CAF50;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    user-select: none;
+    margin: 0 auto;
+    max-width: 500px;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.3);
+    overflow: hidden;
+  "
 >
-  <!-- Pestaña/barra de arrastre -->
-  <div 
-    style="position: absolute; 
-           top: 0; 
-           left: 0; 
-           right: 0; 
-           height: {peekHeight}px;
-           display: flex;
-           align-items: center;
-           justify-content: center;"
-    on:click={togglePanel}
-  >
-    <div style="width: 40px; height: 4px; background: rgba(255,255,255,0.5); border-radius: 2px;"></div>
-  </div>
-  
-  <!-- Contenido del panel -->
-  <div style="margin-top: {peekHeight}px; padding: 20px; overflow-y: auto; height: calc(100% - {peekHeight}px);">
-    <h2>Panel Dinámico</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+  <!-- Handle -->
+  <div style="width: 50px; height: 6px; background: rgba(255,255,255,0.6); border-radius: 3px; margin-bottom: 10px;"></div>
+
+  <!-- Content -->
+  <div style="overflow-y: auto; width: 100%; height: 100%; padding: 0 8px;">
+    <p>Prueba de drawer</p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. 
+      Sed lacinia, mauris eget suscipit placerat, nisi sapien luctus sem, id fermentum justo 
+      augue sed risus. Suspendisse sed nulla sit amet justo tempor malesuada. 
+    </p>
+    <p>
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
+      Duis efficitur urna et odio feugiat, a congue magna viverra. Sed in erat in sapien suscipit 
+      luctus. Mauris a rutrum nibh. 
+    </p>
+    <p>
+      Nam eget quam id nisi tincidunt porttitor. Aenean finibus, justo in convallis porttitor, 
+      lorem orci dapibus est, eget laoreet leo nunc a nibh.
+    </p>
   </div>
 </div>
+
 
 
 
