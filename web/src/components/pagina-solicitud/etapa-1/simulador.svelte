@@ -496,7 +496,7 @@ Solicítalo YA
 
 
 
-
+<!-- 
  <section class="w-1/2 h-full flex flex-col justify-start items-center relative overflow-hidden p-[3%] box-border">
 			<div class="bg-black text-white w-[70%] p-[1.5vw] pb-[2vw] mb-[0.6vw] rounded-3xl">
 			<h1 class="text-[2.2vw] my-4 font-bold text-center">Detalle costos</h1>
@@ -538,4 +538,4 @@ Solicítalo YA
 			
 
 			</section>
-
+ -->
