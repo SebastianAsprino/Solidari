@@ -450,45 +450,6 @@ Solicítalo YA
     <div class="overflow-y-auto w-full h-full px-2 text-sm">
 			<h1 class="text-[2.2vw] my-4 font-bold text-center">Detalle costos</h1>
 			
-			<div class="grid grid-cols-2 gap-y-[1vw] text-[1.4vw]">
-			
-				<h2 class="text-left">Cuota a capital</h2>
-			<div class="relative group">
-			<h2 class="text-right flex items-center justify-end">
-			1
-			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
-			i
-			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
-			Monto principal del préstamo que se amortiza cada mes
-			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
-			</span>
-			</span>
-			</h2>
-			</div>
-			
-			
-			
-			
-			
-			
-			
-			<div class="col-span-2 border-t border-white my-2"></div>
-			
-			
-			<h2 class="text-left font-bold">Total a pagar</h2>
-			<div class="relative group">
-				<h2 class="text-right font-bold">
-					1
-				</h2>
-			</div>
-			
-			</div>
-			<div class="flex flex-col justify-start items-center">
-				<button class="bg-black text-white py-[1.4%] px-[3%] border-2 border-white rounded-full text-[1.2vw] transition-all duration-300 hover:shadow-lg hover:brightness-90 hover:bg-gray-800 mt-4" on:click={onBack}>
-					Solicítalo YA
-					</button>
-			</div>
-
     </div>
   </div>
 {/if}
