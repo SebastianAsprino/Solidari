@@ -382,15 +382,18 @@ Solicítalo YA
 
 <script>
   import { onMount } from 'svelte';
+	import { solicitudStore, detallesStore } from "../../../services/storage/store";
 
   let y = 0;
   let isReady = false;
 
-  const drawerHeight = 400;
   const visibleTab = 40;
 
+  // 70% visible
+  const drawerHeightRatio = 0.7; // 70%
+
   const CLOSED_POSITION = () => window.innerHeight - visibleTab;
-  const OPEN_POSITION = () => window.innerHeight - drawerHeight;
+  const OPEN_POSITION = () => window.innerHeight * (1 - drawerHeightRatio); // e.g. 30% desde arriba
 
   let startY = 0;
   let endY = 0;
@@ -404,13 +407,11 @@ Solicítalo YA
     endY = isTouchEvent(e) ? e.changedTouches[0].clientY : e.clientY;
     const delta = endY - startY;
 
-    const threshold = 30; // sensibilidad mínima del gesto
+    const threshold = 30;
 
     if (delta < -threshold) {
-      // swipe hacia arriba → abrir
       y = OPEN_POSITION();
     } else if (delta > threshold) {
-      // swipe hacia abajo → cerrar
       y = CLOSED_POSITION();
     }
   }
@@ -420,7 +421,7 @@ Solicítalo YA
   }
 
   function handleResize() {
-    y = CLOSED_POSITION(); // En resize, lo cerramos por defecto
+    y = CLOSED_POSITION();
   }
 
   onMount(() => {
@@ -428,51 +429,91 @@ Solicítalo YA
     isReady = true;
 
     window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   });
 </script>
 
 {#if isReady}
   <div
     role="button"
-		tabindex="0"
+    tabindex="0"
     on:touchstart={handleStart}
     on:touchend={handleEnd}
     on:mousedown={handleStart}
     on:mouseup={handleEnd}
-    class="fixed left-0 right-0 mx-auto max-w-[500px] bg-red-600 text-white font-bold rounded-t-2xl shadow-[0_-4px_12px_rgba(0,0,0,0.3)] flex flex-col items-center p-4 touch-none cursor-ns-resize overflow-hidden transition-[top] ease-in-out duration-300"
-    style="top: {y}px; height: {drawerHeight}px;"
+    class="fixed left-0 right-0 mx-auto max-w-[500px] bg-red-600 text-white rounded-t-2xl shadow-[0_-4px_12px_rgba(0,0,0,0.3)] flex flex-col items-center p-4 touch-none cursor-ns-resize overflow-hidden transition-[top] ease-in-out duration-300"
+    style="top: {y}px; height: {window.innerHeight * drawerHeightRatio}px;"
   >
-    <div class="w-12 h-1.5 bg-white/60 rounded-full mb-2"></div>
+
+	<div class="w-12 h-1.5 bg-white/60 rounded-full mb-2"></div>
 
     <div class="overflow-y-auto w-full h-full px-2 text-sm">
-      <p>Prueba de drawer</p>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-      </p>
-      <!-- más contenido -->
-    </div>
-  </div>
-{/if}
-
-
-
-
-
-
-		<!-- <section class="w-1/2 h-full flex flex-col justify-start items-center relative overflow-hidden p-[3%] box-border">
-			<div class="bg-black text-white w-[70%] p-[0.5vw] mb-[0.6vw]">
-			<h1 class="text-[2.2vw] mb-4 font-bold text-center">Detalle costos</h1>
+			<h1 class="text-[2.2vw] my-4 font-bold text-center">Detalle costos</h1>
 			
 			<div class="grid grid-cols-2 gap-y-[1vw] text-[1.4vw]">
 			
 				<h2 class="text-left">Cuota a capital</h2>
 			<div class="relative group">
 			<h2 class="text-right flex items-center justify-end">
-			{formatodinero($detallesStore.cuota)}
+			1
+			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
+			i
+			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
+			Monto principal del préstamo que se amortiza cada mes
+			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
+			</span>
+			</span>
+			</h2>
+			</div>
+			
+			
+			<h2 class="text-left">Cuota a capital</h2>
+			<div class="relative group">
+			<h2 class="text-right flex items-center justify-end">
+			1
+			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
+			i
+			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
+			Monto principal del préstamo que se amortiza cada mes
+			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
+			</span>
+			</span>
+			</h2>
+			</div>
+			
+			
+			<h2 class="text-left">Cuota a capital</h2>
+			<div class="relative group">
+			<h2 class="text-right flex items-center justify-end">
+			1
+			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
+			i
+			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
+			Monto principal del préstamo que se amortiza cada mes
+			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
+			</span>
+			</span>
+			</h2>
+			</div>
+			
+			
+			<h2 class="text-left">Cuota a capital</h2>
+			<div class="relative group">
+			<h2 class="text-right flex items-center justify-end">
+			1
+			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
+			i
+			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
+			Monto principal del préstamo que se amortiza cada mes
+			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
+			</span>
+			</span>
+			</h2>
+			</div>
+			<h2 class="text-left">Cuota a capital</h2>
+			<div class="relative group">
+			<h2 class="text-right flex items-center justify-end">
+			1
 			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
 			i
 			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
@@ -487,14 +528,105 @@ Solicítalo YA
 			
 			
 			
-			<h2 class="text-left">Intereses</h2>
+			
+			
+			<div class="col-span-2 border-t border-white my-2"></div>
+			
+			
+			<h2 class="text-left font-bold">Total a pagar</h2>
+			<div class="relative group">
+				<h2 class="text-right font-bold">
+					1
+				</h2>
+			</div>
+			
+			</div>
+			<div class="flex flex-col justify-start items-center">
+				<button class="bg-black text-white py-[1.4%] px-[3%] border-2 border-white rounded-full text-[1.2vw] transition-all duration-300 hover:shadow-lg hover:brightness-90 hover:bg-gray-800 mt-4" on:click={onBack}>
+					Solicítalo YA
+					</button>
+			</div>
+
+    </div>
+  </div>
+{/if}
+
+
+
+
+
+ <section class="w-1/2 h-full flex flex-col justify-start items-center relative overflow-hidden p-[3%] box-border">
+			<div class="bg-black text-white w-[70%] p-[1.5vw] pb-[2vw] mb-[0.6vw] rounded-3xl">
+			<h1 class="text-[2.2vw] my-4 font-bold text-center">Detalle costos</h1>
+			
+			<div class="grid grid-cols-2 gap-y-[1vw] text-[1.4vw]">
+			
+				<h2 class="text-left">Cuota a capital</h2>
 			<div class="relative group">
 			<h2 class="text-right flex items-center justify-end">
-				{formatodinero($detallesStore.interes)}
+			1
 			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
 			i
 			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
-				Coste financiero del préstamo calculado sobre saldos
+			Monto principal del préstamo que se amortiza cada mes
+			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
+			</span>
+			</span>
+			</h2>
+			</div>
+			
+			
+			<h2 class="text-left">Cuota a capital</h2>
+			<div class="relative group">
+			<h2 class="text-right flex items-center justify-end">
+			1
+			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
+			i
+			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
+			Monto principal del préstamo que se amortiza cada mes
+			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
+			</span>
+			</span>
+			</h2>
+			</div>
+			
+			
+			<h2 class="text-left">Cuota a capital</h2>
+			<div class="relative group">
+			<h2 class="text-right flex items-center justify-end">
+			1
+			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
+			i
+			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
+			Monto principal del préstamo que se amortiza cada mes
+			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
+			</span>
+			</span>
+			</h2>
+			</div>
+			
+			
+			<h2 class="text-left">Cuota a capital</h2>
+			<div class="relative group">
+			<h2 class="text-right flex items-center justify-end">
+			1
+			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
+			i
+			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
+			Monto principal del préstamo que se amortiza cada mes
+			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
+			</span>
+			</span>
+			</h2>
+			</div>
+			<h2 class="text-left">Cuota a capital</h2>
+			<div class="relative group">
+			<h2 class="text-right flex items-center justify-end">
+			1
+			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
+			i
+			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
+			Monto principal del préstamo que se amortiza cada mes
 			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
 			</span>
 			</span>
@@ -503,60 +635,6 @@ Solicítalo YA
 			
 			
 			
-			<h2 class="text-left">Fondo de garantías</h2>
-			<div class="relative group">
-			<h2 class="text-right flex items-center justify-end">
-				{formatodinero($detallesStore.fondo)}
-			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
-			i
-			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
-				Seguro que cubre impagos, calculado sobre el saldo
-			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
-			</span>
-			</span>
-			</h2>
-			</div>
-			
-			
-			
-			
-			
-			
-			
-			<h2 class="text-left">Cuota administrativa</h2>
-			<div class="relative group">
-			<h2 class="text-right flex items-center justify-end">
-				{formatodinero($detallesStore.administracion)}
-			
-			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
-			i
-			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
-				Costo fijo por administración del crédito
-			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
-			</span>
-			</span>
-			</h2>
-			</div>
-			
-			
-			
-			
-			
-			
-			<h2 class="text-left">IVA</h2>
-			<div class="relative group">
-			<h2 class="text-right flex items-center justify-end">
-				{formatodinero($detallesStore.iva)}
-			
-			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
-			i
-			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
-				Impuesto al Valor Agregado sobre intereses y comisiones
-			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
-			</span>
-			</span>
-			</h2>
-			</div>
 			
 			
 			
@@ -567,15 +645,19 @@ Solicítalo YA
 			<h2 class="text-left font-bold">Total a pagar</h2>
 			<div class="relative group">
 				<h2 class="text-right font-bold">
-					{formatodinero($detallesStore.total)}
+					1
 				</h2>
 			</div>
 			
 			</div>
+			<div class="flex flex-col justify-start items-center">
+				<button class="bg-black text-white py-[1.4%] px-[3%] border-2 border-white rounded-full text-[1.2vw] transition-all duration-300 hover:shadow-lg hover:brightness-90 hover:bg-gray-800 mt-4" on:click={onBack}>
+					Solicítalo YA
+					</button>
+			</div>
+
 			</div>
 			
-			<button class="bg-black text-white py-[1.4%] px-[3%] rounded text-[1.2vw] transition-all duration-300 hover:shadow-lg hover:brightness-90 hover:bg-gray-800 mt-4" on:click={onBack}>
-			Solicítalo YA
-			</button>
-			</section> -->
+
+			</section>
 
