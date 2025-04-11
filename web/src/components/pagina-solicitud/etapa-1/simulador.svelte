@@ -381,26 +381,15 @@ Solicítalo YA
 
 
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   let y = 0;
   let isDragging = false;
   let startY;
   let isReady = false;
 
-  const drawerHeight = 400; // Alto del drawer
-  const visibleTab = 40;    // Parte visible cuando está oculto
-
-  onMount(() => {
-    y = window.innerHeight - visibleTab;
-    isReady = true;
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
+  const drawerHeight = 400;
+  const visibleTab = 40;
 
   function startDrag(e) {
     isDragging = true;
@@ -417,6 +406,8 @@ Solicítalo YA
     const maxY = window.innerHeight - visibleTab;
 
     y = Math.max(minY, Math.min(newY, maxY));
+
+    e.preventDefault();
   }
 
   function stopDrag() {
@@ -429,26 +420,45 @@ Solicítalo YA
       y = Math.min(y, maxY);
     }
   }
-</script>
 
-<svelte:window on:resize={handleResize} />
+  onMount(() => {
+    y = window.innerHeight - visibleTab;
+    isReady = true;
+
+    window.addEventListener('resize', handleResize);
+
+    // Escuchar en window para evitar el "pegado"
+    window.addEventListener('mousemove', duringDrag);
+    window.addEventListener('mouseup', stopDrag);
+    window.addEventListener('mouseleave', stopDrag);
+
+    window.addEventListener('touchmove', duringDrag, { passive: false });
+    window.addEventListener('touchend', stopDrag);
+    window.addEventListener('touchcancel', stopDrag);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+
+      window.removeEventListener('mousemove', duringDrag);
+      window.removeEventListener('mouseup', stopDrag);
+      window.removeEventListener('mouseleave', stopDrag);
+
+      window.removeEventListener('touchmove', duringDrag);
+      window.removeEventListener('touchend', stopDrag);
+      window.removeEventListener('touchcancel', stopDrag);
+    };
+  });
+</script>
 
 {#if isReady}
   <div
     on:touchstart={startDrag}
     on:mousedown={startDrag}
-    on:touchmove={duringDrag}
-    on:mousemove={duringDrag}
-    on:touchend={stopDrag}
-    on:mouseup={stopDrag}
-    on:mouseleave={stopDrag}
-    class="fixed left-0 right-0 mx-auto max-w-[500px] bg-blue-600 text-white font-bold rounded-t-2xl shadow-[0_-4px_12px_rgba(0,0,0,0.3)] flex flex-col items-center p-4 touch-none cursor-ns-resize overflow-hidden transition-[top] ease-in-out duration-200"
+    class="fixed left-0 right-0 mx-auto max-w-[500px] bg-red-600 text-white font-bold rounded-t-2xl shadow-[0_-4px_12px_rgba(0,0,0,0.3)] flex flex-col items-center p-4 touch-none cursor-ns-resize overflow-hidden transition-[top] ease-in-out duration-200"
     style="top: {y}px; height: {drawerHeight}px;"
   >
-    <!-- Handle -->
     <div class="w-12 h-1.5 bg-white/60 rounded-full mb-2"></div>
 
-    <!-- Content -->
     <div class="overflow-y-auto w-full h-full px-2 text-sm">
       <p>Prueba de drawer</p>
       <p>
