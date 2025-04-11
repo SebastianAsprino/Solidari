@@ -1,4 +1,4 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	import { solicitudStore, detallesStore } from "../../../services/storage/store";
 	import config from "../../../../web_config";
 	import s from "./styles";
@@ -47,7 +47,7 @@
 	};
 
 	export let onBack: () => void;
-</script> -->
+</script>
 
 
 
@@ -62,19 +62,20 @@
 
 
 
-<!-- <main class="flex h-screen overflow-hidden">
-<section class="w-1/2 h-full flex flex-col justify-start items-center relative overflow-hidden p-[2%] box-border">
-	<h1 class="text-[2.2vw] font-bold tracking-wider mb-[2vw]">
-		Simulador de Crédito
+
+<section class="w-full sm:w-1/2 h-full flex flex-col justify-start items-center relative overflow-hidden p-[2%] box-border">
+	<h1 class="text-[5.6vw] sm:text-[2.2vw] font-bold tracking-wider mb-[2vw] mt-[5vw] sm:mt-0">
+		SIMULADOR DE CRÉDITO
 	</h1>
-	<h2 class="text-[1.5vw] mb-[1.2vw]">
+	<h2 class="text-[4.5vw] sm:text-[1.5vw] mb-[1.2vw]">
 		¿Qué tipo de cliente eres?
 	</h2>
-	<div class="flex w-1/2 justify-around mb-[1.5vw]">
-		<button class="bg-black text-white py-[2.5%] px-[4.5%] no-underline rounded-full text-[1.2vw] transition-all duration-300  hover:shadow-lg hover:brightness-90 hover:bg-gray-800" on:click={() => tipoCliente(false)}>
+	<div class="flex w-1/2 justify-around gap-x-[4vw] sm:gap-x-0 mb-[1.5vw] mt-1.5 sm:mt-0">
+
+		<button class="bg-black text-white  py-[4.5%] px-[7%] no-underline rounded-full text-[2.5vw] sm:text-[1.2vw] transition-all duration-300  hover:shadow-lg hover:brightness-90 hover:bg-gray-800" on:click={() => tipoCliente(false)}>
 				Nuevo
 		</button>
-		<button class="bg-black text-white py-[2.5%] px-[4.5%] no-underline rounded-full text-[1.2vw] transition-all duration-300  hover:shadow-lg hover:brightness-90 hover:bg-gray-800" on:click={() => tipoCliente(true)}>
+		<button class="bg-black text-white py-[4.5%] px-[7%] no-underline rounded-full text-[2.5vw] sm:text-[1.2vw] transition-all duration-300  hover:shadow-lg hover:brightness-90 hover:bg-gray-800" on:click={() => tipoCliente(true)}>
 			Miembro del Club
 		</button>
 	</div>
@@ -180,7 +181,7 @@ class="w-full appearance-none bg-transparent cursor-pointer
 </datalist>
 </div>
 {/if}
-</section> -->
+</section>
 
 
 
@@ -241,7 +242,7 @@ class="w-full appearance-none bg-transparent cursor-pointer
 
 
 
-<!-- <section class="w-1/2 h-full flex flex-col justify-start items-center relative overflow-hidden p-[3%] box-border">
+<section class="w-1/2 h-full flex flex-col justify-start items-center relative overflow-hidden p-[3%] box-border">
 <div class="bg-black text-white w-[70%] p-[0.5vw] mb-[0.6vw]">
 <h1 class="text-[2.2vw] mb-4 font-bold text-center">Detalle costos</h1>
 
@@ -355,9 +356,7 @@ i
 <button class="bg-black text-white py-[1.4%] px-[3%] rounded text-[1.2vw] transition-all duration-300 hover:shadow-lg hover:brightness-90 hover:bg-gray-800 mt-4" on:click={onBack}>
 Solicítalo YA
 </button>
-</section> -->
-
-<!-- </main> -->
+</section>
 
 
 
@@ -380,7 +379,9 @@ Solicítalo YA
 
 
 
-<script>
+
+
+<!-- <script>
   import { onMount } from 'svelte';
 	import { solicitudStore, detallesStore } from "../../../services/storage/store";
 
@@ -454,7 +455,7 @@ Solicítalo YA
   </div>
 {/if}
 
-
+ -->
 
 
 <!-- 
@@ -500,3 +501,37 @@ Solicítalo YA
 
 			</section>
  -->
+
+
+
+ <!-- <script>
+  import { onMount } from 'svelte';
+  
+  // Variable reactiva para almacenar si es móvil
+  let isMobile = false;
+  
+  // Función para verificar el tamaño de pantalla
+  const checkIfMobile = () => {
+    // Consideramos móvil si el ancho es menor o igual a 768px
+    isMobile = window.innerWidth <= 768;
+  };
+  
+  onMount(() => {
+    // Verificar al cargar el componente
+    checkIfMobile();
+    
+    // Escuchar cambios de tamaño de ventana
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Limpieza al desmontar el componente
+    return () => {
+      window.removeEventListener('resize', checkIfMobile);
+    };
+  });
+</script>
+
+{#if isMobile}
+  <div class="mobile-only">
+    Este contenido solo se muestra en dispositivos móviles (≤768px)
+  </div>
+{/if} -->
