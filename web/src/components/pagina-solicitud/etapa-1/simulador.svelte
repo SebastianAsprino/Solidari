@@ -386,12 +386,14 @@ Solicítalo YA
   let y = 0;
   let isDragging = false;
   let startY;
+  let isReady = false;
 
   const drawerHeight = 400; // Alto del drawer
   const visibleTab = 40;    // Parte visible cuando está oculto
 
   onMount(() => {
     y = window.innerHeight - visibleTab;
+    isReady = true;
 
     window.addEventListener('resize', handleResize);
 
@@ -411,7 +413,6 @@ Solicítalo YA
 
     let newY = (e.type === 'touchmove' ? e.touches[0].clientY : e.clientY) - startY;
 
-    // Limitar entre el tope superior deseado y el borde inferior
     const minY = window.innerHeight - drawerHeight;
     const maxY = window.innerHeight - visibleTab;
 
@@ -432,60 +433,41 @@ Solicítalo YA
 
 <svelte:window on:resize={handleResize} />
 
-<div
-  on:touchstart={startDrag}
-  on:mousedown={startDrag}
-  on:touchmove={duringDrag}
-  on:mousemove={duringDrag}
-  on:touchend={stopDrag}
-  on:mouseup={stopDrag}
-  on:mouseleave={stopDrag}
-  style="
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: {y}px;
-    height: {drawerHeight}px;
-    touch-action: none;
-    cursor: ns-resize;
-    transition: {isDragging ? 'none' : 'top 0.2s ease'};
-    background-color: #4CAF50;
-    border-radius: 20px 20px 0 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 16px;
-    color: white;
-    font-weight: bold;
-    user-select: none;
-    margin: 0 auto;
-    max-width: 500px;
-    box-shadow: 0 -4px 12px rgba(0,0,0,0.3);
-    overflow: hidden;
-  "
->
-  <!-- Handle -->
-  <div style="width: 50px; height: 6px; background: rgba(255,255,255,0.6); border-radius: 3px; margin-bottom: 10px;"></div>
+{#if isReady}
+  <div
+    on:touchstart={startDrag}
+    on:mousedown={startDrag}
+    on:touchmove={duringDrag}
+    on:mousemove={duringDrag}
+    on:touchend={stopDrag}
+    on:mouseup={stopDrag}
+    on:mouseleave={stopDrag}
+    class="fixed left-0 right-0 mx-auto max-w-[500px] bg-blue-600 text-white font-bold rounded-t-2xl shadow-[0_-4px_12px_rgba(0,0,0,0.3)] flex flex-col items-center p-4 touch-none cursor-ns-resize overflow-hidden transition-[top] ease-in-out duration-200"
+    style="top: {y}px; height: {drawerHeight}px;"
+  >
+    <!-- Handle -->
+    <div class="w-12 h-1.5 bg-white/60 rounded-full mb-2"></div>
 
-  <!-- Content -->
-  <div style="overflow-y: auto; width: 100%; height: 100%; padding: 0 8px;">
-    <p>Prueba de drawer</p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. 
-      Sed lacinia, mauris eget suscipit placerat, nisi sapien luctus sem, id fermentum justo 
-      augue sed risus. Suspendisse sed nulla sit amet justo tempor malesuada. 
-    </p>
-    <p>
-      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
-      Duis efficitur urna et odio feugiat, a congue magna viverra. Sed in erat in sapien suscipit 
-      luctus. Mauris a rutrum nibh. 
-    </p>
-    <p>
-      Nam eget quam id nisi tincidunt porttitor. Aenean finibus, justo in convallis porttitor, 
-      lorem orci dapibus est, eget laoreet leo nunc a nibh.
-    </p>
+    <!-- Content -->
+    <div class="overflow-y-auto w-full h-full px-2 text-sm">
+      <p>Prueba de drawer</p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. 
+        Sed lacinia, mauris eget suscipit placerat, nisi sapien luctus sem, id fermentum justo 
+        augue sed risus. Suspendisse sed nulla sit amet justo tempor malesuada. 
+      </p>
+      <p>
+        Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
+        Duis efficitur urna et odio feugiat, a congue magna viverra. Sed in erat in sapien suscipit 
+        luctus. Mauris a rutrum nibh. 
+      </p>
+      <p>
+        Nam eget quam id nisi tincidunt porttitor. Aenean finibus, justo in convallis porttitor, 
+        lorem orci dapibus est, eget laoreet leo nunc a nibh.
+      </p>
+    </div>
   </div>
-</div>
+{/if}
 
 
 
