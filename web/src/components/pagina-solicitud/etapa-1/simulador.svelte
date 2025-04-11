@@ -380,22 +380,19 @@ Solicítalo YA
 
 
 
-
-
-
-
-
 <script>
   import { onMount } from 'svelte';
   
-  let y = 0; // Posición vertical del panel
-  let isDragging = false; // Estado de arrastre
-  let startY; // Posición inicial del arrastre
-  let isCollapsed = true; // Indica si el panel está colapsado o expandido
+  let y = 0;
+  let isDragging = false;
+  let startY;
+  let isOpen = false;
+  const panelHeight = window.innerHeight * 0.7; // 70% de la altura de la ventana
+  const peekHeight = 30; // Altura visible cuando está cerrado
 
   onMount(() => {
-    // Inicializar posición al montar el componente
-    y = window.innerHeight - 50; // Solo la pestaña es visible inicialmente
+    // Inicializar posición al montar el componente (cerrado)
+    y = window.innerHeight - peekHeight;
     
     // Añadir listener de resize
     window.addEventListener('resize', handleResize);
@@ -430,26 +427,43 @@ Solicítalo YA
     }
     
     // Limitar movimiento vertical
-    const minY = 100; // Mínimo permitido
-    const maxY = window.innerHeight - 50; // Máximo permitido (pestaña visible)
+    const minY = 100; // Margen superior
+    const maxY = window.innerHeight - peekHeight;
     
     y = Math.max(minY, Math.min(newY, maxY));
-    
-    // Determinar si el panel está colapsado o expandido
-    if (y >= window.innerHeight - 50) {
-      isCollapsed = true;
-    } else {
-      isCollapsed = false;
-    }
   }
 
   function stopDrag() {
     isDragging = false;
+    
+    // Determinar si el panel debe abrirse o cerrarse basado en la posición
+    const threshold = window.innerHeight - panelHeight / 2;
+    isOpen = y < threshold;
+    
+    // Ajustar la posición final
+    if (isOpen) {
+      y = Math.max(100, window.innerHeight - panelHeight);
+    } else {
+      y = window.innerHeight - peekHeight;
+    }
+  }
+
+  function togglePanel() {
+    isOpen = !isOpen;
+    if (isOpen) {
+      y = Math.max(100, window.innerHeight - panelHeight);
+    } else {
+      y = window.innerHeight - peekHeight;
+    }
   }
 
   function handleResize() {
     if (!isDragging) {
-      y = Math.min(y, window.innerHeight - 50);
+      if (isOpen) {
+        y = Math.max(100, window.innerHeight - panelHeight);
+      } else {
+        y = window.innerHeight - peekHeight;
+      }
     }
   }
 </script>
@@ -468,34 +482,166 @@ Solicítalo YA
          left: 0;
          right: 0;
          top: {y}px; 
-         height: {isCollapsed ? '25vw' : '50vw'}; /* Altura dinámica */
+         height: {isOpen ? panelHeight + 'px' : peekHeight + 'px'};
          touch-action: none; 
          cursor: ns-resize;
          transition: {isDragging ? 'none' : 'top 0.2s ease, height 0.2s ease'};
-         background-color: #4CAF50;
+         background-color: #ff5733;
          border-radius: 10px 10px 0 0;
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-         justify-content: flex-start;
          color: white;
          font-weight: bold;
          user-select: none;
          margin: 0 auto;
          max-width: 500px;
-         box-shadow: 0 -2px 10px rgba(0,0,0,0.2);"
+         box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+         overflow: hidden;"
 >
-  <!-- Pestaña -->
-  <div style="position: absolute; top: 8px; width: 40px; height: 4px; background: rgba(255,255,255,0.5); border-radius: 2px;"></div>
+  <!-- Pestaña/barra de arrastre -->
+  <div 
+    style="position: absolute; 
+           top: 0; 
+           left: 0; 
+           right: 0; 
+           height: {peekHeight}px;
+           display: flex;
+           align-items: center;
+           justify-content: center;"
+    on:click={togglePanel}
+  >
+    <div style="width: 40px; height: 4px; background: rgba(255,255,255,0.5); border-radius: 2px;"></div>
+  </div>
   
-  <!-- Contenido -->
-  <div style="padding: 20px; overflow-y: auto; flex-grow: 1;">
+  <!-- Contenido del panel -->
+  <div style="margin-top: {peekHeight}px; padding: 20px; overflow-y: auto; height: calc(100% - {peekHeight}px);">
     <h2>Panel Dinámico</h2>
-    <p class="text-black">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
-    <p class="text-blue-600">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
   </div>
 </div>
+
+
+
+
+
+
+		<!-- <section class="w-1/2 h-full flex flex-col justify-start items-center relative overflow-hidden p-[3%] box-border">
+			<div class="bg-black text-white w-[70%] p-[0.5vw] mb-[0.6vw]">
+			<h1 class="text-[2.2vw] mb-4 font-bold text-center">Detalle costos</h1>
+			
+			<div class="grid grid-cols-2 gap-y-[1vw] text-[1.4vw]">
+			
+				<h2 class="text-left">Cuota a capital</h2>
+			<div class="relative group">
+			<h2 class="text-right flex items-center justify-end">
+			{formatodinero($detallesStore.cuota)}
+			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
+			i
+			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
+			Monto principal del préstamo que se amortiza cada mes
+			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
+			</span>
+			</span>
+			</h2>
+			</div>
+			
+			
+			
+			
+			
+			<h2 class="text-left">Intereses</h2>
+			<div class="relative group">
+			<h2 class="text-right flex items-center justify-end">
+				{formatodinero($detallesStore.interes)}
+			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
+			i
+			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
+				Coste financiero del préstamo calculado sobre saldos
+			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
+			</span>
+			</span>
+			</h2>
+			</div>
+			
+			
+			
+			<h2 class="text-left">Fondo de garantías</h2>
+			<div class="relative group">
+			<h2 class="text-right flex items-center justify-end">
+				{formatodinero($detallesStore.fondo)}
+			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
+			i
+			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
+				Seguro que cubre impagos, calculado sobre el saldo
+			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
+			</span>
+			</span>
+			</h2>
+			</div>
+			
+			
+			
+			
+			
+			
+			
+			<h2 class="text-left">Cuota administrativa</h2>
+			<div class="relative group">
+			<h2 class="text-right flex items-center justify-end">
+				{formatodinero($detallesStore.administracion)}
+			
+			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
+			i
+			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
+				Costo fijo por administración del crédito
+			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
+			</span>
+			</span>
+			</h2>
+			</div>
+			
+			
+			
+			
+			
+			
+			<h2 class="text-left">IVA</h2>
+			<div class="relative group">
+			<h2 class="text-right flex items-center justify-end">
+				{formatodinero($detallesStore.iva)}
+			
+			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
+			i
+			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
+				Impuesto al Valor Agregado sobre intereses y comisiones
+			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
+			</span>
+			</span>
+			</h2>
+			</div>
+			
+			
+			
+			
+			<div class="col-span-2 border-t border-white my-2"></div>
+			
+			
+			<h2 class="text-left font-bold">Total a pagar</h2>
+			<div class="relative group">
+				<h2 class="text-right font-bold">
+					{formatodinero($detallesStore.total)}
+				</h2>
+			</div>
+			
+			</div>
+			</div>
+			
+			<button class="bg-black text-white py-[1.4%] px-[3%] rounded text-[1.2vw] transition-all duration-300 hover:shadow-lg hover:brightness-90 hover:bg-gray-800 mt-4" on:click={onBack}>
+			Solicítalo YA
+			</button>
+			</section> -->
+
