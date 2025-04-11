@@ -441,7 +441,7 @@ Solicítalo YA
     on:touchend={handleEnd}
     on:mousedown={handleStart}
     on:mouseup={handleEnd}
-    class="fixed left-0 right-0 mx-auto max-w-[500px] bg-red-600 text-white rounded-t-2xl shadow-[0_-4px_12px_rgba(0,0,0,0.3)] flex flex-col items-center p-4 touch-none cursor-ns-resize overflow-hidden transition-[top] ease-in-out duration-300"
+    class="fixed left-0 right-0 mx-auto max-w-[500px] bg-red-600 text-white rounded-t-4xl shadow-[0_-4px_12px_rgba(0,0,0,0.3)] flex flex-col items-center p-4 touch-none cursor-ns-resize overflow-hidden transition-[top] ease-in-out duration-300"
     style="top: {y}px; height: {window.innerHeight * drawerHeightRatio}px;"
   >
 
@@ -453,64 +453,6 @@ Solicítalo YA
 			<div class="grid grid-cols-2 gap-y-[1vw] text-[1.4vw]">
 			
 				<h2 class="text-left">Cuota a capital</h2>
-			<div class="relative group">
-			<h2 class="text-right flex items-center justify-end">
-			1
-			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
-			i
-			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
-			Monto principal del préstamo que se amortiza cada mes
-			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
-			</span>
-			</span>
-			</h2>
-			</div>
-			
-			
-			<h2 class="text-left">Cuota a capital</h2>
-			<div class="relative group">
-			<h2 class="text-right flex items-center justify-end">
-			1
-			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
-			i
-			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
-			Monto principal del préstamo que se amortiza cada mes
-			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
-			</span>
-			</span>
-			</h2>
-			</div>
-			
-			
-			<h2 class="text-left">Cuota a capital</h2>
-			<div class="relative group">
-			<h2 class="text-right flex items-center justify-end">
-			1
-			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
-			i
-			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
-			Monto principal del préstamo que se amortiza cada mes
-			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
-			</span>
-			</span>
-			</h2>
-			</div>
-			
-			
-			<h2 class="text-left">Cuota a capital</h2>
-			<div class="relative group">
-			<h2 class="text-right flex items-center justify-end">
-			1
-			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
-			i
-			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
-			Monto principal del préstamo que se amortiza cada mes
-			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
-			</span>
-			</span>
-			</h2>
-			</div>
-			<h2 class="text-left">Cuota a capital</h2>
 			<div class="relative group">
 			<h2 class="text-right flex items-center justify-end">
 			1
@@ -574,70 +516,6 @@ Solicítalo YA
 			</span>
 			</h2>
 			</div>
-			
-			
-			<h2 class="text-left">Cuota a capital</h2>
-			<div class="relative group">
-			<h2 class="text-right flex items-center justify-end">
-			1
-			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
-			i
-			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
-			Monto principal del préstamo que se amortiza cada mes
-			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
-			</span>
-			</span>
-			</h2>
-			</div>
-			
-			
-			<h2 class="text-left">Cuota a capital</h2>
-			<div class="relative group">
-			<h2 class="text-right flex items-center justify-end">
-			1
-			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
-			i
-			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
-			Monto principal del préstamo que se amortiza cada mes
-			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
-			</span>
-			</span>
-			</h2>
-			</div>
-			
-			
-			<h2 class="text-left">Cuota a capital</h2>
-			<div class="relative group">
-			<h2 class="text-right flex items-center justify-end">
-			1
-			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
-			i
-			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
-			Monto principal del préstamo que se amortiza cada mes
-			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
-			</span>
-			</span>
-			</h2>
-			</div>
-			<h2 class="text-left">Cuota a capital</h2>
-			<div class="relative group">
-			<h2 class="text-right flex items-center justify-end">
-			1
-			<span class="inline-flex items-center justify-center w-[1.2vw] h-[1.2vw] rounded-full bg-gray-300 text-black text-[1vw] ml-[0.6vw] relative group">
-			i
-			<span class="absolute right-[110%] top-1/2 -translate-y-1/2 bg-white text-black text-[0.9vw] p-[0.5vw] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[12vw] text-center">
-			Monto principal del préstamo que se amortiza cada mes
-			<span class="absolute left-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></span>
-			</span>
-			</span>
-			</h2>
-			</div>
-			
-			
-			
-			
-			
-			
 			
 			<div class="col-span-2 border-t border-white my-2"></div>
 			
